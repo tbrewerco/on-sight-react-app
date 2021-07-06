@@ -20,4 +20,6 @@ const userTickSchema = new Schema({
 );
 
 // export model
-module.exports = mongoose.model("UserTick", userTickSchema);
+const UserTick = mongoose.model("UserTick", userTickSchema);
+
+module.exports = UserTick;
