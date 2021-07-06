@@ -28,6 +28,15 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
+const ticksRouter = require("./controllers/ticks");
+app.use("/ticks", ticksRouter);
+
+const routesRouter = require("./controllers/routes");
+app.use("/routes", routesRouter);
+
+const userRouter = require("./controllers/users");
+app.use("/users", usersRouter);
+
 // routes (home)
 app.get('/', (req, res) => {
     res.send('hello, world');
