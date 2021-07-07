@@ -4,8 +4,8 @@ const { PORT = 4000, MONGODB_URL } = process.env;
 const express = require('express');
 const app = express();
 const Mongoose = require('mongoose');
-const Route = require("./models/route");
-const UserTick = require("./models/userTick");
+// const Route = require("./models/route.model");
+// const UserTick = require("./models/userTick.model");
 const cors = require("cors");
 const morgan = require("morgan");
 
@@ -23,24 +23,27 @@ Mongoose.connection
     .on("close", () => console.log("disconnected from mongoose")) 
     .on("error", (error) => console.log(error));
 
+// routes (home)
+// app.get('/', (req, res) => {
+//     res.send('hello, world');
+// });
+
 // middleware
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 const ticksRouter = require("./controllers/ticks");
 app.use("/ticks", ticksRouter);
 
-const routesRouter = require("./controllers/routes");
-app.use("/routes", routesRouter);
+// const routesRouter = require("./controllers/routes");
+// app.use("/routes", routesRouter);
 
-const userRouter = require("./controllers/users");
-app.use("/users", usersRouter);
+// const usersRouter = require("./controllers/users");
+// app.use("/users", usersRouter);
 
-// routes (home)
-app.get('/', (req, res) => {
-    res.send('hello, world');
-});
+
 
 
 

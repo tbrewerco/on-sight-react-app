@@ -1,7 +1,7 @@
 // dependencies
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const UserTick = require("./userTick");
+const UserTick = require("./userTick.model");
 
 // schema
 const routeSchema = new Schema({
