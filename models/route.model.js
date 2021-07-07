@@ -24,8 +24,11 @@ const routeSchema = new Schema({
     name: String,
     route_type: String,
     gym_area: String,
-    consensus_rating: {type: Number, min: 1, max: 5},
+    hold_color: String,
+    setter_name: String,
+    setter_grade: {type: Number, min: 1, max: 5},
     consensus_grade: {type: Number, min: 1, max: 30}, // Needs to be converted to YDS (1 = 5.4, 30 = 5.15D)
+    consensus_rating: {type: Number, min: 1, max: 5},
     user_ticks: [userTickSchema],
     createdBy: { 
         type: Schema.Types.ObjectId,
