@@ -32,11 +32,15 @@ router.patch("/:id", async (req, res) => {
 });
 
 // route create route
+
 router.post("/", async (req, res) => {
     try {
-        res.json(await Route.create(req.body));
+        let gymRoute = await Route.create(req.body);
+        res.json(gymRoute);
     } catch (error) {
-        res.status(400).json(error);
+        //send error
+        res.send("THERE WAS AN ERROR!");
+        //res.status(400).json(error);
     }
 });
 

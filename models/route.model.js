@@ -25,8 +25,9 @@ const routeSchema = new Schema({
     route_type: String,
     gym_area: String,
     hold_color: String,
+    image: String,
     setter_name: String,
-    setter_grade: {type: Number, min: 1, max: 5},
+    setter_grade: {type: Number, min: 1, max: 30},
     consensus_grade: {type: Number, min: 1, max: 30}, // Needs to be converted to YDS (1 = 5.4, 30 = 5.15D)
     consensus_rating: {type: Number, min: 1, max: 5},
     user_ticks: [userTickSchema],
