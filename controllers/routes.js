@@ -17,6 +17,7 @@ router.get("/", async (req, res) => {
             // console.log(grades);
             return route;
         })
+
         res.json(routes);
     } catch (error) {
         res.status(400).json(error);
