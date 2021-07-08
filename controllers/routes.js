@@ -8,9 +8,9 @@ const faker = require('faker');
 router.get("/", async (req, res) => {
     try {
         let routes = await Route.find({}) // keep modifications to routes within this loop
-        routes = routes.map(route => {
-            const grades = route.user_ticks.map(tick => {
-                return tick.difficulty_grade;
+        routes = routes.map(route => { // map over routes
+            const grades = route.user_ticks.map(tick => { // map over embedded user_ticks
+                return tick.difficulty_grade; // return difficulty grade
                 // console.log tick
             })
             route.consensus_grade = _.round(_.mean(grades)) || route.setter_grade; // provides mean of grades, rounded, uses setter grade if no consensus
@@ -36,7 +36,8 @@ router.delete("/:id", async (req, res) => {
 router.patch("/:id", async (req, res) => {
     try {
         res.json(
-            await Route.findByIdAndUpdate(req.params.id, req.body, /*{ new: true} */)
+            await Route.findByIdAndUpdate(req.params.id, req.body,
+            )
         );
     } catch (error) {
         res.status(400).json(error);
@@ -50,39 +51,37 @@ router.post("/", async (req, res) => {
         let gymRoute = await Route.create(req.body);
         res.json(gymRoute);
     } catch (error) {
-        //send error
         res.send("THERE WAS AN ERROR!");
-        //res.status(400).json(error);
     }
 });
 
-// fake data
+// populate fake data
 router.post("/fake-data", async (req, res) => {
     try {
         let gymRoute = await Route.create({
             name: faker.commerce.productName(),
-            route_type: faker.random.arrayElement(["boulder", "sport"]),
-            gym_area: faker.random.arrayElement(["front", "back"]),
-            hold_color: faker.commerce.color(),
+            route_type: faker.random.arrayElement(["Sport"]),
+            gym_area: faker.random.arrayElement(["Back Wall", "Arch", "World Cup Wall", "45 Degree Cave"]),
+            hold_color: _.capitalize(faker.commerce.color()),
             image: "",
-            setter_name: faker.random.arrayElement(["Scott", "Dave", "Joe"]),
-            setter_grade: faker.datatype.number({ min: 1, max: 10 }),
+            setter_name: faker.random.arrayElement(["Melissa Joan Hart", "Lil Wayne", "Bill Murray", "Travis"]),
+            setter_grade: faker.datatype.number({ min: 1, max: 30 }),
             consensus_rating: faker.datatype.number({ min: 1, max: 5 }),
             user_ticks: [
                 {
                     comment: faker.lorem.sentence(),
                     quality_rating: faker.datatype.number({ min: 1, max: 5 }),
-                    difficulty_grade: faker.datatype.number({ min: 1, max: 10 }), // YDS???
+                    difficulty_grade: faker.datatype.number({ min: 1, max: 30 }), // YDS???
                 },
                 {
                     comment: faker.lorem.sentence(),
                     quality_rating: faker.datatype.number({ min: 1, max: 5 }),
-                    difficulty_grade: faker.datatype.number({ min: 1, max: 10 }), // YDS???
+                    difficulty_grade: faker.datatype.number({ min: 1, max: 30 }), // YDS???
                 },
                 {
                     comment: faker.lorem.sentence(),
                     quality_rating: faker.datatype.number({ min: 1, max: 5 }),
-                    difficulty_grade: faker.datatype.number({ min: 1, max: 10 }), // YDS???
+                    difficulty_grade: faker.datatype.number({ min: 1, max: 30 }), // YDS???
                 }
             ],
             // createdBy: "",
@@ -90,7 +89,7 @@ router.post("/fake-data", async (req, res) => {
         res.json(gymRoute);
     } catch (error) {
         //send error
-        res.send("THERE WAS AN ERROR!");
+        res.send("ERROR!");
         //res.status(400).json(error);
     }
 });
