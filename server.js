@@ -31,6 +31,11 @@ Mongoose.connection
     .on("close", () => console.log("disconnected from mongoose"))
     .on("error", (error) => console.log(error));
 
+// test route
+app.get("/", (req, res) => {
+    res.send("hello, world!");
+});
+
 //////
 // middleware
 //////
@@ -42,6 +47,7 @@ app.use(express.urlencoded({ extended: false }));
 //////
 // routes
 //////
+
 const routesRouter = require("./controllers/routes");
 app.use("/routes", routesRouter);
 const seedRouter = require("./controllers/seed_route");

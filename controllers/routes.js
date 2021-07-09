@@ -9,6 +9,7 @@ const faker = require("faker");
 //////
 // routes index route
 //////
+
 router.get("/", async (req, res) => {
     try {
         let routes = await Route.find({});
