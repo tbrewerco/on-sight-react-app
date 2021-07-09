@@ -1,15 +1,15 @@
 //////
 // .env
 //////
-require('dotenv').config();
+require("dotenv").config();
 const { PORT = 4000, MONGODB_URL } = process.env;
 
 //////
 // dependencies/imports
 //////
-const express = require('express');
+const express = require("express");
 const app = express();
-const Mongoose = require('mongoose');
+const Mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
 
@@ -20,7 +20,7 @@ Mongoose.connect(MONGODB_URL, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false // ???
+    useFindAndModify: false
 });
 
 //////
@@ -50,4 +50,4 @@ app.use("/routes", seedRouter);
 //////
 // listener
 //////
-app.listen(PORT, () => console.log(`listening on PORT ${PORT}`))
+app.listen(PORT, () => console.log(`listening on PORT ${PORT}`));
