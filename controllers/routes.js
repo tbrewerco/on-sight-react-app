@@ -1,8 +1,21 @@
-// dependencies
+//////
+// dependencies/imports
+//////
 const router = require("express").Router();
 const Route = require("../models/route.model");
 const _ = require("lodash");
 const faker = require('faker');
+
+
+
+//////
+// update
+//////
+
+
+//////
+// delete
+//////
 
 // route index route
 router.get("/", async (req, res) => {
@@ -11,10 +24,10 @@ router.get("/", async (req, res) => {
         routes = routes.map(route => { // map over routes
             const grades = route.user_ticks.map(tick => { // map over embedded user_ticks
                 return tick.difficulty_grade; // return difficulty grade
-                // console.log tick
             })
+
             route.consensus_grade = _.round(_.mean(grades)) || route.setter_grade; // provides mean of grades, rounded, uses setter grade if no consensus
-            // console.log(grades);
+
             return route;
         })
 
@@ -46,7 +59,6 @@ router.patch("/:id", async (req, res) => {
 });
 
 // route create route
-
 router.post("/", async (req, res) => {
     try {
         let gymRoute = await Route.create(req.body);
@@ -56,7 +68,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-// populate fake data
+// populate seed data
 router.post("/fake-data", async (req, res) => {
     try {
         let gymRoute = await Route.create({
