@@ -7,7 +7,7 @@ const _ = require("lodash");
 const faker = require("faker");
 
 //////
-// routes seed route
+// seed route
 //////
 router.post("/fake-data-boulder", async (req, res) => {
     try {
