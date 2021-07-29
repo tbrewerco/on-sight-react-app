@@ -54,7 +54,7 @@ app.use(express.json());
 const routesRouter = require("./controllers/routes");
 app.use("/routes", routesRouter);
 const seedRouter = require("./controllers/seed_route");
-app.use("/routes", seedRouter);
+app.use("/fake", seedRouter);
 
 //////
 // listener
