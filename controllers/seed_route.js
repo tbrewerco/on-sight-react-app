@@ -19,7 +19,6 @@ router.post("/fake-data-boulder", async (req, res) => {
             image: "",
             setter_name: faker.random.arrayElement(["Melissa Joan Hart", "Lil Wayne", "Bill Murray", "Travis"]),
             setter_grade: faker.datatype.number({ min: 1, max: 20 }),
-            consensus_rating: faker.datatype.number({ min: 1, max: 5 }),
             user_ticks: [
                 {
                     comment: faker.lorem.sentence(),

@@ -34,8 +34,6 @@ const routeSchema = new Schema({
     image: String,
     setter_name: String,
     setter_grade: { type: Number, min: 1, max: 30 },
-    consensus_grade: { type: Number, min: 1, max: 30 },
-    consensus_rating: { type: Number, min: 1, max: 5 },
     user_ticks: [userTickSchema],
     createdBy: {
         type: Schema.Types.ObjectId,

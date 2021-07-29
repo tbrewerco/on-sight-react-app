@@ -15,13 +15,15 @@ router.get("/", async (req, res) => {
         let routes = await Route.find({});
         // future (keep within this loop): boulder routes
         routes = routes.map(route => {
-            // map over routes
             const grades = route.user_ticks.map(tick => {
-                // map over embedded user_ticks, return difficulty_grades
                 return tick.difficulty_grade;
             });
-            // set consensus grade to mean average of aggregate difficulty_grades from user_ticks, OR uses setter grade if no consensus
             route.consensus_grade = _.round(_.mean(grades)) || route.setter_grade;
+
+            const ratings = route.user_ticks.map(tick => {
+                return tick.quality_rating;
+            });
+            route.consensus_rating = _.round(_.mean(ratings)) || "Not enough ratings for consensus";
 
             return route;
         });
