@@ -13,16 +13,17 @@ const faker = require("faker");
 router.get("/", async (req, res) => {
     try {
         let routes = await Route.find({});
-        // future (keep within this loop): boulder routes
         routes = routes.map(route => {
             const grades = route.user_ticks.map(tick => {
                 return tick.difficulty_grade;
             });
-            route.consensus_grade = _.round(_.mean(grades)) || route.setter_grade;
+            // combine setter_grade value with grades array and produce average of all numbers in the new array.
+            route.consensus_grade = _.round(_.mean(grades.concat(route.setter_grade))) || route.setter_grade;
 
             const ratings = route.user_ticks.map(tick => {
                 return tick.quality_rating;
             });
+
             route.consensus_rating = _.round(_.mean(ratings)) || "Not enough ratings for consensus";
 
             return route;
