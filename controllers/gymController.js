@@ -14,24 +14,21 @@ router.get("/", async (req, res) => {
     try {
         let gyms = await Gym.find({});
         gyms = gyms.map(gym => {
-
-            const routes = gym.climbing_routes.map(route => {
-                const grades = gym.route.user_ticks.map(tick => {
+            const climbingRoutes = gym.climbing_routes.map(route => {
+                const grades = route.user_ticks.map(tick => {
+                    // console.log(tick);
                     return tick.difficulty_grade;
                 });
                 // combine setter_grade value with grades array and produce average of all numbers in the new array.
                 route.consensus_grade = _.round(_.mean(grades.concat(route.setter_grade))) || route.setter_grade;
-
                 const ratings = route.user_ticks.map(tick => {
                     return tick.quality_rating;
                 });
-
                 route.consensus_rating = _.round(_.mean(ratings)) || "Not enough ratings for consensus";
-
-                return gym;
+                return route;
             });
+            return gym;
         })
-
         res.json(gyms);
     } catch (error) {
         res.status(400).json(error);
