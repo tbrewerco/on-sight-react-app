@@ -3,9 +3,7 @@
 //////
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-//////
-// tick schema (userTick)
-//////
+
 const userTickSchema = new Schema({
     comment: String,
     quality_rating: { type: Number, min: 1, max: 5 },
@@ -21,9 +19,7 @@ const userTickSchema = new Schema({
 },
     { timestamps: true }
 );
-//////
-// route schema
-//////
+
 const routeSchema = new Schema({
     name: String,
     route_type: String,
@@ -42,18 +38,25 @@ const routeSchema = new Schema({
 },
     { timestamps: true }
 );
-//////
-// gym schema
-//////
+
+const locationSchema = new Schema({
+    type: String,
+    coordinates: [Number]
+})
+
+const addressSchema = new Schema({
+    streetAddress: String,
+    city: String,
+    state: String,
+    zip: Number
+})
+
 const gymSchema = new Schema({
     name: String,
-    address: [{
-        addressNum: String,
-        city: String,
-        State: String,
-    }],
-    image: String,
-    climbing_routes: [routeSchema], // ref. rel.?
+    address: [addressSchema],
+    location: [locationSchema],
+    images: [String],
+    climbing_routes: [routeSchema],
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: "User"
