@@ -12,6 +12,8 @@ const app = express();
 const Mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
+const _ = require("lodash");
+const faker = require("faker");
 // const methodOverride = require("method-override");
 //////
 // establish database connection
@@ -30,10 +32,6 @@ Mongoose.connection
     .on("close", () => console.log("disconnected from mongoose"))
     .on("error", (error) => console.log(error));
 
-// test route
-app.get("/", (req, res) => {
-    res.send("hello, world!");
-});
 //////
 // middleware
 //////
@@ -43,13 +41,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 // app.use(methodOverride("_method"));
+
+
 //////
 // routes
 //////
-const routesRouter = require("./controllers/routes");
-app.use("/routes", routesRouter);
-const seedRouter = require("./controllers/seed_route");
-app.use("/fake", seedRouter);
+// test route
+app.get("/", (req, res) => {
+    res.send("hello, world!");
+});
+
+const gymsRouter = require("./controllers/gymController");
+app.use("/gyms", gymsRouter);
+
 //////
 // listener
 //////
