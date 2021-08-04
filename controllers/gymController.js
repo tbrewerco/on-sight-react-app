@@ -6,19 +6,26 @@ const Gym = require("../models/gym.model");
 const _ = require("lodash");
 const faker = require("faker");
 const haversine = require("haversine-distance");
-
+const zipcodes = require("zipcodes");
 //////
 // routes index route
 //////
-
 router.get("/", async (req, res) => {
     try {
         let gyms = await Gym.find({});
         gyms = gyms.map(gym => {
-            if (req.query.lat && req.query.long && gym.location.length > 0) {
-                const userLocation = { latitude: req.query.lat, longitude: req.query.long }
-                const distance = haversine(userLocation, gym.location[0].coordinates);
-                gym.distanceFromUser = _.round(getMilesFromMeters(distance))
+            if (req.query.zipCode) {
+                if (req.query.zipCode && req.query.zipCode.length === 5 && gym.location.length > 0) {
+                    const userLocation = zipcodes.lookup(req.query.zipCode);
+                    const distance = haversine(userLocation, gym.location[0].coordinates);
+                    gym.distanceFromUser = _.round(getMilesFromMeters(distance))
+                }
+            } else if (!req.query.zipCode) {
+                if (req.query.lat && req.query.long && gym.location.length > 0) {
+                    const userLocation = { latitude: req.query.lat, longitude: req.query.long }
+                    const distance = haversine(userLocation, gym.location[0].coordinates);
+                    gym.distanceFromUser = _.round(getMilesFromMeters(distance))
+                }
             }
             const climbingRoutes = gym.climbing_routes.map(route => {
                 const grades = route.user_ticks.map(tick => {
@@ -40,7 +47,6 @@ router.get("/", async (req, res) => {
         res.status(400).json(error);
     };
 });
-
 //////
 // routes delete route
 //////
@@ -51,7 +57,6 @@ router.delete("/:id", async (req, res) => {
         res.status(400).json(error);
     }
 });
-
 //////
 // routes update route
 //////
@@ -65,7 +70,6 @@ router.patch("/:id", async (req, res) => {
         res.status(400).json(error);
     }
 });
-
 //////
 // routes create route
 //////
@@ -77,9 +81,7 @@ router.post("/", async (req, res) => {
         res.send("Error!", error);
     }
 });
-
 const getMilesFromMeters = (meters) => {
     return meters * 0.000621371192;
 }
-
 module.exports = router;
