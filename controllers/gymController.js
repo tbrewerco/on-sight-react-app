@@ -16,9 +16,12 @@ router.get("/", async (req, res) => {
         gyms = gyms.map(gym => {
             if (req.query.zipCode) {
                 if (req.query.zipCode && req.query.zipCode.length === 5 && gym.location.length > 0) {
+                    // ERROR HANDLING
                     const userLocation = zipcodes.lookup(req.query.zipCode);
-                    const distance = haversine(userLocation, gym.location[0].coordinates);
-                    gym.distanceFromUser = _.round(getMilesFromMeters(distance))
+                    if (userLocation) {
+                        const distance = haversine(userLocation, gym.location[0].coordinates);
+                        gym.distanceFromUser = _.round(getMilesFromMeters(distance))
+                    }
                 }
             } else if (!req.query.zipCode) {
                 if (req.query.lat && req.query.long && gym.location.length > 0) {
