@@ -5,7 +5,6 @@ const router = require("express").Router();
 const Gym = require("../models/gym.model");
 const _ = require("lodash");
 const faker = require("faker");
-const haversine = require("haversine-distance");
 
 //////
 // routes index route
@@ -15,11 +14,6 @@ router.get("/", async (req, res) => {
     try {
         let gyms = await Gym.find({});
         gyms = gyms.map(gym => {
-            if (req.query.lat && req.query.long && gym.location.length > 0) {
-                const userLocation = { latitude: req.query.lat, longitude: req.query.long }
-                const distance = haversine(userLocation, gym.location[0].coordinates);
-                gym.distanceFromUser = _.round(getMilesFromMeters(distance))
-            }
             const climbingRoutes = gym.climbing_routes.map(route => {
                 const grades = route.user_ticks.map(tick => {
                     // console.log(tick);
@@ -77,9 +71,5 @@ router.post("/", async (req, res) => {
         res.send("Error!", error);
     }
 });
-
-const getMilesFromMeters = (meters) => {
-    return meters * 0.000621371192;
-}
 
 module.exports = router;
