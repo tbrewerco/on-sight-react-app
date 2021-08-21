@@ -55,7 +55,7 @@ const gymSchema = new Schema({
     name: String,
     address: [addressSchema],
     location: [locationSchema],
-    distanceFromUser: Number,
+    distanceFromUser: String,
     images: [String],
     climbing_routes: [routeSchema],
     createdBy: {
