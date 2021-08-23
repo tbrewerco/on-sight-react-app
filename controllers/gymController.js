@@ -20,7 +20,11 @@ router.get("/", async (req, res) => {
                     const userLocation = zipcodes.lookup(req.query.zipCode);
                     if (userLocation) {
                         const distance = haversine(userLocation, gym.location[0].coordinates);
-                        gym.distanceFromUser = _.round(getMilesFromMeters(distance))
+                        gym.distanceFromUser = _.round(getMilesFromMeters(distance));
+                    }
+                    if (!userLocation) {
+                        gym.distanceFromUser = "Please Enter a Valid Zip Code"
+                        console.error("Please Enter a Valid Zip Code")
                     }
                 }
             } else if (!req.query.zipCode) {
@@ -30,6 +34,7 @@ router.get("/", async (req, res) => {
                     gym.distanceFromUser = _.round(getMilesFromMeters(distance))
                 }
             }
+
             const climbingRoutes = gym.climbing_routes.map(route => {
                 const grades = route.user_ticks.map(tick => {
                     // console.log(tick);
