@@ -3,10 +3,12 @@
 //////
 const router = require("express").Router();
 const Gym = require("../models/gym.model");
+const Route = require("../models/gym.model")
 const _ = require("lodash");
 const faker = require("faker");
 const haversine = require("haversine-distance");
 const zipcodes = require("zipcodes");
+const { find } = require("lodash");
 //////
 // routes index route
 //////
@@ -34,7 +36,6 @@ router.get("/", async (req, res) => {
                     gym.distanceFromUser = _.round(getMilesFromMeters(distance))
                 }
             }
-
             const climbingRoutes = gym.climbing_routes.map(route => {
                 const grades = route.user_ticks.map(tick => {
                     // console.log(tick);
@@ -79,16 +80,29 @@ router.patch("/:id", async (req, res) => {
     }
 });
 //////
-// routes create route
+// tick create route
 //////
-router.post("/", async (req, res) => {
+router.patch("/:gymId/climbing_routes/:routeId", async (req, res) => {
     try {
-        let gymS = await Gym.create(req.body);
-        res.json(gymS);
+        // find gym by id
+        let theGym = Gym.findById(req.params.gymId, (err, gym) => {
+            // find route by id
+            let theRoute = gym.climbing_routes.id(req.params.routeId)
+            // add request body as new tick at beginning of user_ticks array 
+            theRoute.user_ticks.unshift(req.body);
+            gym.markModified('gym.climbing_routes.user_ticks')
+            gym.save(function (error) {
+                if (error) {
+                    return (error)
+                } else {
+                    res.json(theRoute.user_ticks)
+                }
+            })
+        })
     } catch (error) {
-        res.send("Error!", error);
+        res.send(error);
     }
-});
+})
 const getMilesFromMeters = (meters) => {
     return meters * 0.000621371192;
 }
