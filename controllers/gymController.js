@@ -57,7 +57,7 @@ router.get("/", async (req, res) => {
     };
 });
 //////
-// routes delete route
+// gyms delete route
 //////
 router.delete("/:id", async (req, res) => {
     try {
@@ -103,6 +103,31 @@ router.patch("/:gymId/climbing_routes/:routeId", async (req, res) => {
         res.send(error);
     }
 })
+
+//////
+// ticks delete route
+//////
+
+router.patch("/:gymId/climbing_routes/:routeId/ticks/:tickId", async (req, res) => {
+    try {
+        let theGym = await Gym.findById(req.params.gymId, async (err, gym) => {
+            let theRoute = await gym.climbing_routes.id(req.params.routeId)
+            let ticksArray = theRoute.user_ticks
+            ticksArray.splice(ticksArray.findIndex(tick => tick.id === req.params.tickId), 1)
+            gym.markModified('gym.climbing_routes.user_ticks')
+            gym.save(function (error) {
+                if (error) {
+                    return (error)
+                } else {
+                    res.json(theRoute.user_ticks)
+                }
+            })
+        })
+    } catch (error) {
+        res.send(error);
+    }
+})
+
 const getMilesFromMeters = (meters) => {
     return meters * 0.000621371192;
 }
