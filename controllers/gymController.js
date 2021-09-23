@@ -1,6 +1,4 @@
-//////
 // dependencies/imports
-//////
 const router = require("express").Router();
 const Gym = require("../models/gym.model");
 const Route = require("../models/gym.model")
@@ -9,9 +7,7 @@ const faker = require("faker");
 const haversine = require("haversine-distance");
 const zipcodes = require("zipcodes");
 const { find } = require("lodash");
-//////
 // routes index route
-//////
 router.get("/", async (req, res) => {
     try {
         let gyms = await Gym.find({});
@@ -56,9 +52,7 @@ router.get("/", async (req, res) => {
         res.status(400).json(error);
     };
 });
-//////
 // gyms delete route
-//////
 router.delete("/:id", async (req, res) => {
     try {
         res.json(await Gym.findByIdAndRemove(req.params.id));
@@ -66,9 +60,7 @@ router.delete("/:id", async (req, res) => {
         res.status(400).json(error);
     }
 });
-//////
 // routes update route
-//////
 router.patch("/:id", async (req, res) => {
     try {
         res.json(
@@ -79,16 +71,11 @@ router.patch("/:id", async (req, res) => {
         res.status(400).json(error);
     }
 });
-//////
 // tick create route
-//////
 router.patch("/:gymId/climbing_routes/:routeId", async (req, res) => {
     try {
-        // find gym by id
         let theGym = Gym.findById(req.params.gymId, (err, gym) => {
-            // find route by id
             let theRoute = gym.climbing_routes.id(req.params.routeId)
-            // add request body as new tick at beginning of user_ticks array 
             theRoute.user_ticks.unshift(req.body);
             gym.markModified('gym.climbing_routes.user_ticks')
             gym.save(function (error) {
@@ -103,11 +90,7 @@ router.patch("/:gymId/climbing_routes/:routeId", async (req, res) => {
         res.send(error);
     }
 })
-
-//////
 // ticks delete route
-//////
-
 router.patch("/:gymId/climbing_routes/:routeId/ticks/:tickId", async (req, res) => {
     try {
         let theGym = await Gym.findById(req.params.gymId, async (err, gym) => {
@@ -127,7 +110,7 @@ router.patch("/:gymId/climbing_routes/:routeId/ticks/:tickId", async (req, res) 
         res.send(error);
     }
 })
-
+// mileage function
 const getMilesFromMeters = (meters) => {
     return meters * 0.000621371192;
 }
