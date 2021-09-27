@@ -2,6 +2,8 @@
 const router = require("express").Router();
 const Gym = require("../models/gym.model");
 const Route = require("../models/gym.model")
+const UserTick = require("../models/gym.model")
+
 const _ = require("lodash");
 const faker = require("faker");
 const haversine = require("haversine-distance");
@@ -77,6 +79,27 @@ router.patch("/:gymId/climbing_routes/:routeId", async (req, res) => {
         let theGym = Gym.findById(req.params.gymId, (err, gym) => {
             let theRoute = gym.climbing_routes.id(req.params.routeId)
             theRoute.user_ticks.unshift(req.body);
+            gym.markModified('gym.climbing_routes.user_ticks')
+            gym.save(function (error) {
+                if (error) {
+                    return (error)
+                } else {
+                    res.json(theRoute.user_ticks)
+                }
+            })
+        })
+    } catch (error) {
+        res.send(error);
+    }
+})
+// tick update route
+router.patch("/:gymId/climbing_routes/:routeId/ticks/:tickId/update", async (req, res) => {
+    try {
+        let theGym = await Gym.findById(req.params.gymId, async (err, gym) => {
+            console.log(req.body)
+            let theRoute = await gym.climbing_routes.id(req.params.routeId)
+            let ticksArray = theRoute.user_ticks
+            ticksArray.splice(ticksArray.findIndex(tick => tick.id === req.params.tickId), 1, req.body)
             gym.markModified('gym.climbing_routes.user_ticks')
             gym.save(function (error) {
                 if (error) {
