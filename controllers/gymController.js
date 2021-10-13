@@ -16,7 +16,6 @@ router.get("/", async (req, res) => {
         gyms = gyms.map(gym => {
             if (req.query.zipCode) {
                 if (req.query.zipCode && req.query.zipCode.length === 5 && gym.location.length > 0) {
-                    // ERROR HANDLING
                     const userLocation = zipcodes.lookup(req.query.zipCode);
                     if (userLocation) {
                         const distance = haversine(userLocation, gym.location[0].coordinates);
@@ -48,6 +47,8 @@ router.get("/", async (req, res) => {
             });
             return gym;
         })
+        // sort gyms by distance from user, descending
+        gyms.sort((a, b) => a.distanceFromUser - b.distanceFromUser)
         res.json(gyms);
     } catch (error) {
         res.status(400).json(error);
