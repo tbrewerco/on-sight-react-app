@@ -4,9 +4,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-//////
-// schema
-//////
 const userSchema = new Schema({
     username: {
         type: String,
