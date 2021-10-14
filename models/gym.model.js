@@ -22,7 +22,7 @@ const gymSchema = new Schema({
     boulders_available: Boolean,
     sport_routes_available: Boolean,
     auto_belays_available: Boolean,
-    createdBy: {
+    created_by: {
         type: Schema.Types.ObjectId,
         ref: "User"
     },
