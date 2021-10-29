@@ -12,7 +12,7 @@ const addressSchema = new Schema({
     streetAddress: String,
     city: String,
     state: String,
-    zip: Number
+    zip: String
 })
 
 const gymSchema = new Schema({

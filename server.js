@@ -47,13 +47,23 @@ app.use(express.json());
 // routes
 //////
 // test route
-app.get("/", (req, res) => {
-    res.send("hello, world!");
-});
+// app.get("/", (req, res) => {
+//     res.send("hello, world!");
+// });
 
 const gymsRouter = require("./controllers/gymController");
 app.use("/gyms", gymsRouter);
 
+
+const gymSeed = require("./controllers/seedRoute");
+const Gym = require("./models/gym.model");
+
+app.get("/gyms/seed", (req, res) => {
+    Gym.create(gymSeed, (error, data) => {
+        res.redirect("/gyms");
+    });
+});
+// app.use("/seed", seedRouter);
 //////
 // listener
 //////
