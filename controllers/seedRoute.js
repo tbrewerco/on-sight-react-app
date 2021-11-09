@@ -1,6 +1,7 @@
 // dependencies/imports
 // const router = require("express").Router();
 const Gym = require("../models/gym.model");
+const router = require("express").Router();
 const _ = require("lodash");
 const faker = require("faker");
 
